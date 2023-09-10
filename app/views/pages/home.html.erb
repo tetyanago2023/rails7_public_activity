@@ -1,0 +1,25 @@
+<h1>Pages#home</h1>
+<p>Find me in app/views/pages/home.html.erb</p>
+<% @activities.each do |activity| %>
+  <% if activity.trackable_type == 'Post' %>
+    <div style="border: solid 1px black">
+      <% if activity.key == 'post.destroy' %>
+        <p><%= t('public_activity.post.destroy') %> <%= activity.created_at.to_s %></p>
+      <% else %>
+        <% post = activity.trackable %>
+        <% owner = activity.owner %>
+        <% if post.nil? %>
+          <% next %>
+        <% end %>
+        <div class="post">
+          <h2><%= post.title %></h2>
+          <p><%= post.body %></p>
+          <p class="timestamp"><%= activity.created_at %></p>
+          <p class="action"><%= action_name(activity) %></p>
+          <p class="action"><%= owner.email %> <%= t("public_activity.#{activity.key}") %></p>
+        </div>
+      <% end %>
+  <% end %>
+  </div>
+<% end %>
+
